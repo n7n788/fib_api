@@ -12,7 +12,7 @@ class FibonaccisController < ApplicationController
     if n < 0 # 負の整数の場合
       render json: { status: 400, message: "Bad request." }, status: 400
     else
-      render json: { result: Fibonacci.value(position: n) }, status: 200
+      render json: { result: Fibonacci.value(position: n).to_i }, status: 200
     end
   end
 
