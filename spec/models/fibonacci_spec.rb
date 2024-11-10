@@ -17,7 +17,7 @@ RSpec.describe Fibonacci, type: :model do
     end
 
     it 'is not valid without a non-integer position' do
-      subject.position = 'a'
+      subject.position = "a"
       aggregate_failures do
         expect(subject).to_not be_valid
         expect(subject.errors[:position]).to include("is not a number")
@@ -48,11 +48,11 @@ RSpec.describe Fibonacci, type: :model do
       end
     end
 
-    it 'is not valid without a non-integer value' do
-      subject.value = 'a'
+    it 'is not valid with a non integer value' do
+      subject.value = "a"
       aggregate_failures do
         expect(subject).to_not be_valid
-        expect(subject.errors[:value]).to include("is not a number")
+        expect(subject.errors[:value]).to include("must be a non negative integer")
       end
     end
   end
@@ -98,7 +98,7 @@ RSpec.describe Fibonacci, type: :model do
 
       context 'when the position is over 1' do
         it 'return the valid fibonacci number' do
-          expect(described_class.value(position: 10)).to eq 89
+          expect(described_class.value(position: 98)).to eq 218922995834555169026
         end
       end
 

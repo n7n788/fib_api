@@ -1,7 +1,8 @@
 class Fibonacci < ApplicationRecord
   validates :position, presence: true, uniqueness: true,
             numericality: { only_integer: true, greater_than_or_equal_to: 0}
-  validates :value, presence: true, numericality: { only_integer: true }
+  validates :value, presence: true,
+            format: { with: /\A\d+\z/, message: "must be a non negative integer" }
 
   # フィボナッチ数列の値を取得する
   # @param [Integer] position 取得するフィボナッチ数列の位置
@@ -9,7 +10,7 @@ class Fibonacci < ApplicationRecord
   def self.value(position:)
     # 既に計算済みの値であれば、その値を返す
     fibonacci = find_by(position: position)
-    return fibonacci.value if fibonacci
+    return fibonacci.value.to_i if fibonacci
 
     # 未計算であれば、計算して保存する
     begin
@@ -29,8 +30,8 @@ class Fibonacci < ApplicationRecord
   # @return [Integer] 生成したフィボナッチ数列の値
   # @raise [ActiveRecord::RecordInvalid] レコードの保存に失敗した場合、エラーを発生
   def self.generate(position:, value:)
-    fibonacci = new(position: position, value: value)
+    fibonacci = new(position: position, value: value.to_s)
     fibonacci.save!
-    return fibonacci.value
+    return value
   end
 end

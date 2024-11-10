@@ -47,7 +47,7 @@ RSpec.describe "Fibonaccis", type: :request do
       end
     end
 
-    context "when params n is string" do
+    context "when params n is not integer" do
       it "returns http 400 status" do
         get "/fib", params: { n: "a" }
         expect(response).to have_http_status(400)
