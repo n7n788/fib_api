@@ -66,4 +66,6 @@ RSpec.configure do |config|
 
   # FactoryBotの設定
   config.include FactoryBot::Syntax::Methods
+
+  $LOAD_PATH.unshift(File.expand_path('../../lib', __dir__))
 end

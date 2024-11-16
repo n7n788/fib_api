@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+require 'validators/number_validator'
 class FibonaccisController < ApplicationController
+  include Validators::NumberValidator
+
   # GET /fib
   def show
     # 整数でない場合
@@ -21,16 +24,5 @@ class FibonaccisController < ApplicationController
 
   def n_params
     params.require(:n)
-  end
-
-  # 文字列が数値かどうかを判定する
-  # @param [String]str 数値の文字列
-  def integer?(str)
-    case str
-    when /\A-?\d+\z/
-      true
-    else
-      false
-    end
   end
 end
