@@ -25,7 +25,7 @@ class Fibonacci < ApplicationRecord
   # @return [BigDecimal] 計算したフィボナッチ数列の値
   # @raise [ActiveRecord::RecordInvalid] レコードの保存に失敗した場合、エラーを発生
   def self.calculate(position:)
-    validate_negative_position!(position: position)
+    raise ActiveRecord::RecordInvalid, Fibonacci.new if position.negative?
 
     value = if base_case?(position: position)
               BigDecimal('1')
@@ -54,12 +54,5 @@ class Fibonacci < ApplicationRecord
   # @return [Boolean] チェック結果
   def self.base_case?(position:)
     position.zero? || position == 1
-  end
-
-  # 負の位置をバリデーションする
-  # @param [Integer] position バリデーションするフィボナッチ数列の位置
-  # @raise [ActiveRecord::RecordInvalid] バリデーションに失敗した場合、エラーを発生
-  def self.validate_negative_position!(position:)
-    raise ActiveRecord::RecordInvalid, Fibonacci.new if position.negative?
   end
 end

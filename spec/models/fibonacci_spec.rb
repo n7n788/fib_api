@@ -62,7 +62,7 @@ RSpec.describe Fibonacci, type: :model do
   end
 
   describe '.value' do
-    context 'when the position already exists' do
+    context 'when the position is already calculated' do
       let(:fibonacci) { create(:fibonacci, position: 0, value: '1') }
 
       it 'calls find_by and return the value' do
@@ -73,7 +73,7 @@ RSpec.describe Fibonacci, type: :model do
       end
     end
 
-    context 'when the position does not exist' do
+    context 'when the position is not already caluclated' do
       context 'and is 0' do
         before do
           allow(described_class).to receive(:generate).with(position: 0,
@@ -88,7 +88,7 @@ RSpec.describe Fibonacci, type: :model do
         end
       end
 
-      context 'when the position is 1' do
+      context 'and is 1' do
         before do
           allow(described_class).to receive(:generate).with(position: 1,
                                                             value: BigDecimal('1')).and_return(BigDecimal('1'))
@@ -102,13 +102,13 @@ RSpec.describe Fibonacci, type: :model do
         end
       end
 
-      context 'when the position is over 1' do
+      context 'and is over 1' do
         it 'return the valid fibonacci number' do
           expect(described_class.value(position: 98)).to eq 218_922_995_834_555_169_026
         end
       end
 
-      context 'when the position is negative number' do
+      context 'and is negative number' do
         it 'raise an error' do
           expect { described_class.value(position: -1) }.to raise_error(ActiveRecord::RecordInvalid)
         end
@@ -130,6 +130,26 @@ RSpec.describe Fibonacci, type: :model do
 
       it 'return the value' do
         expect(described_class.generate(position: 0, value: BigDecimal('1'))).to eq 1
+      end
+    end
+  end
+
+  describe '.base_case?' do
+    context 'when the position is 0' do
+      it 'return true' do
+        expect(described_class.base_case?(position: 0)).to be_truthy
+      end
+    end
+
+    context 'when the position is 1' do
+      it 'return true' do
+        expect(described_class.base_case?(position: 1)).to be_truthy
+      end
+    end
+
+    context 'when the position is not 0 and 1' do
+      it 'return false' do
+        expect(described_class.base_case?(position: 2)).to be_falsey
       end
     end
   end
